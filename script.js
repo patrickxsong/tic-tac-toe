@@ -50,6 +50,14 @@ const gameBoard = (() => {
         return false;
     }
 
+    const endGame = () =>  {
+        message.textContent = "Game Over.";
+        const replay = document.createElement("div");
+        // const YesBtn = 
+        replay.textContent = "Play again?";
+        message.appendChild(replay);
+    };
+
     const playGame = e => {
         let block = e.path[0].textContent;
         
@@ -72,12 +80,7 @@ const gameBoard = (() => {
             gameOver = checkThreeInRow() ? true : false; 
         }
 
-        message.textContent = "Game Over.";
-        const replay = document.createElement("div");
-        // const YesBtn = 
-        replay.textContent = "Play again?";
-        message.appendChild(replay);
-    
+        endGame();
     };
 
     blocks.forEach(block => block.addEventListener("click", playGame));  
