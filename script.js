@@ -2,9 +2,9 @@ const gameBoard = (() => {
     let gameArray = ["", "", "", "", "", "", "", "", ""];
     let turn = "x";
     let gameOver = false;
-    const message = document.querySelector(".message");
+    let winner = 1;
 
-    // const container = document.querySelector(".container");
+    const message = document.querySelector(".message");
     const grid = document.querySelector(".grid");
 
     const render = () => {
@@ -25,39 +25,7 @@ const gameBoard = (() => {
     render();
 
     const blocks = document.querySelectorAll(".block");
-
-    const checkThreeInRow = () => {
-        if (gameArray[0] && gameArray[0] === gameArray[1] && gameArray[0] === gameArray[2]) {
-            return true;
-        } else if (gameArray[0] && gameArray[0] === gameArray[3] && gameArray[0] === gameArray[6]) {
-            return true;
-        } else if (gameArray[0] && gameArray[0] === gameArray[4] && gameArray[0] === gameArray[8]) {
-            return true;
-        } else if (gameArray[3] && gameArray[3] === gameArray[4] && gameArray[3] === gameArray[5]) {
-            return true;
-        } else if (gameArray[6] && gameArray[6] === gameArray[7] && gameArray[6] === gameArray[8]) {
-            return true;
-        } else if (gameArray[1] && gameArray[1] === gameArray[4] && gameArray[1] === gameArray[7]) {
-            return true;
-        } else if (gameArray[2] && gameArray[2] === gameArray[5] && gameArray[2] === gameArray[8]) {
-            return true;
-        } else if (gameArray[2] && gameArray[2] === gameArray[4] && gameArray[2] === gameArray[6]) {
-            return true;
-        } else if (gameArray.every(ele => ele)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    const endGame = () =>  {
-        message.textContent = "Game Over.";
-        const replay = document.createElement("div");
-        // const YesBtn = 
-        replay.textContent = "Play again?";
-        message.appendChild(replay);
-    };
-
+    
     const playGame = e => {
         let block = e.path[0].textContent;
         
@@ -83,7 +51,58 @@ const gameBoard = (() => {
         endGame();
     };
 
-    blocks.forEach(block => block.addEventListener("click", playGame));  
+    const checkThreeInRow = () => {
+        if (gameArray[0] && gameArray[0] === gameArray[1] && gameArray[0] === gameArray[2]) {
+            return true;
+        } else if (gameArray[0] && gameArray[0] === gameArray[3] && gameArray[0] === gameArray[6]) {
+            winner = (gameArray[0] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[0] && gameArray[0] === gameArray[4] && gameArray[0] === gameArray[8]) {
+            winner = (gameArray[0] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[3] && gameArray[3] === gameArray[4] && gameArray[3] === gameArray[5]) {
+            winner = (gameArray[3] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[6] && gameArray[6] === gameArray[7] && gameArray[6] === gameArray[8]) {
+            winner = (gameArray[6] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[1] && gameArray[1] === gameArray[4] && gameArray[1] === gameArray[7]) {
+            winner = (gameArray[1] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[2] && gameArray[2] === gameArray[5] && gameArray[2] === gameArray[8]) {
+            winner = (gameArray[2] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray[2] && gameArray[2] === gameArray[4] && gameArray[2] === gameArray[6]) {
+            winner = (gameArray[2] === "X") ? 1 : 2; 
+            return true;
+        } else if (gameArray.every(ele => ele)) {
+            winner = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    const endGame = () =>  {
+        let messageArr = ["Game Over. "];
+
+        if (winner === 1) {
+            messageArr.push("Player 1 wins!");
+        } else if (winner === 2) {
+            messageArr.push("Player 2 wins!");
+        } else {
+            messageArr.push("Tie game.");
+        }
+
+        message.textContent = messageArr.join(" ");
+
+        const replay = document.createElement("button");
+        replay.textContent = "Play again";
+        
+        message.appendChild(replay);
+        
+        replay.addEventListener("click", resetBoard);
+    };
 
     const resetBoard = () => {
         blocks.forEach(block => block.textContent = "");
@@ -93,15 +112,6 @@ const gameBoard = (() => {
         turn = "x";
     };
 
-    const createPlayer = (name, marker) => {
-        return {
-            name,
-            marker,
-        };
-    };
+    blocks.forEach(block => block.addEventListener("click", playGame));  
 
-    return {
-        gameArray,
-        resetBoard
-    };
 })();
