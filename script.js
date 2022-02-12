@@ -74,11 +74,21 @@ const gameBoard = (() => {
 
         message.textContent = "Game Over.";
         const replay = document.createElement("div");
+        // const YesBtn = 
         replay.textContent = "Play again?";
         message.appendChild(replay);
+    
     };
 
     blocks.forEach(block => block.addEventListener("click", playGame));  
+
+    const resetBoard = () => {
+        blocks.forEach(block => block.textContent = "");
+        gameArray = ["", "", "", "", "", "", "", "", ""];
+        gameOver = false;
+        message.textContent = "";
+        turn = "x";
+    };
 
     const createPlayer = (name, marker) => {
         return {
@@ -87,5 +97,8 @@ const gameBoard = (() => {
         };
     };
 
-    return {gameArray};
+    return {
+        gameArray,
+        resetBoard
+    };
 })();
